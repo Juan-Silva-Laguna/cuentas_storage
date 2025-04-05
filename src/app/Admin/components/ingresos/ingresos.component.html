@@ -1,0 +1,16 @@
+<h2>Ingresos</h2>
+<ul>
+    <li *ngFor="let ingreso of ingresos">{{ ingreso.descripcion }} ({{ ingreso.valor }}) ({{ ingreso.fecha }}) <button (click)="llenarFormulario(ingreso)">Editar</button> <button (click)="eliminar(ingreso)">Eliminar</button></li>
+</ul>
+
+<h3>Agregar Ingreso</h3>
+<input type="hidden" [(ngModel)]="id"  />
+<input [(ngModel)]="descripcion" placeholder="Descripcion" />
+<input type="number" [(ngModel)]="valor" placeholder="Valor" />
+<input type="date" [(ngModel)]="fecha" placeholder="Fecha" />
+Categoria
+<select [(ngModel)]="categoria">
+    <option *ngFor="let categoria of categorias" [value]="categoria.id">{{categoria.nombre}}</option>
+  </select>
+  
+<button (click)="agregarIngreso()">Añadir Ingreso</button>

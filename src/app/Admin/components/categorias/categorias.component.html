@@ -1,0 +1,14 @@
+<h2>Categorías</h2>
+<ul>
+    <li *ngFor="let categoria of categorias">{{ categoria.nombre }} ({{ categoria.tipo }}) <button (click)="llenarFormulario(categoria)">Editar</button> <button (click)="eliminar(categoria)">Eliminar</button></li>
+</ul>
+
+<h3>Agregar Categoria</h3>
+<input type="hidden" [(ngModel)]="id"  />
+<input [(ngModel)]="nombre" placeholder="Nombre Cotegoria" />
+<select [(ngModel)]="tipo">
+    <option value="ingreso">Ingreso</option>
+    <option value="gasto">Gasto</option>
+  </select>
+  
+<button (click)="agregarCategoria()">Añadir Categoría</button>
