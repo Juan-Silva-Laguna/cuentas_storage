@@ -3,10 +3,30 @@ import { Categorias } from '../../../Models/categorias';
 import { CategoriasService } from '../../../Services/categorias.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-categorias',
-  imports: [CommonModule,FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatIconModule,
+    MatTableModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatListModule,
+    MatDividerModule
+  ],
   templateUrl: './categorias.component.html',
   styleUrl: './categorias.component.css'
 })
@@ -15,6 +35,7 @@ export class CategoriasComponent {
   nombre = '';
   id=0;
   tipo = "ingreso";
+  columnas: string[] = ['nombre', 'tipo', 'acciones'];
 
   constructor(private categoriasService: CategoriasService) {
     this.categorias = this.categoriasService.obtenerCategorias();
