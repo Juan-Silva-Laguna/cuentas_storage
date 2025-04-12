@@ -64,7 +64,7 @@ export class CategoriasComponent  implements AfterViewInit {
   }
 
   async eliminar(categoria: Categorias) {
-    const confirmado = await this.alertasServices.mostrarConfirmacion();
+    const confirmado = await this.alertasServices.mostrarConfirmacion("¿Estás seguro de eliminar la categoría?");
     if (confirmado) {
       this.categorias.data = this.categoriasService.eliminarCategorias(categoria);
       this.alertasServices.generarAlerta("Categoria Eliminada",'ok');

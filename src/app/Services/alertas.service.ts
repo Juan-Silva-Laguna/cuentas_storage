@@ -20,12 +20,12 @@ export class AlertasService {
     }).showToast();  
   }
 
-  mostrarConfirmacion(): Promise<boolean> {
+  mostrarConfirmacion(mensaje:String): Promise<boolean> {
     return new Promise((resolve) => {
       const toast = Toastify({
         text: `
           <div style="display: flex; flex-direction: column; gap: 8px;">
-            <div>¿Estás seguro de eliminar la categoría?</div>
+            <div>${mensaje}</div>
             <div style="display: flex; justify-content: center; gap: 12px;">
               <button id="btn-si" style="padding: 4px 8px; background-color: #00dddd; color: white; border: none;">Sí</button>
               <button id="btn-no" style="padding: 4px 8px; background-color: #000; color: white; border: none;">No</button>

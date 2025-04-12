@@ -1,16 +1,78 @@
-<h2>Gastos</h2>
-<ul>
-    <li *ngFor="let gasto of gastos">{{ gasto.descripcion }} ({{ gasto.valor }}) ({{ gasto.fecha }}) <button (click)="llenarFormulario(gasto)">Editar</button> <button (click)="eliminar(gasto)">Eliminar</button></li>
-</ul>
 
-<h3>Agregar Gasto</h3>
-<input type="hidden" [(ngModel)]="id"  />
-<input [(ngModel)]="descripcion" placeholder="Descripcion" />
-<input type="number" [(ngModel)]="valor" placeholder="Valor" />
-<input type="date" [(ngModel)]="fecha" placeholder="Fecha" />
-Categoria
-<select [(ngModel)]="categoria">
-    <option *ngFor="let categoria of categorias" [value]="categoria.id">{{categoria.nombre}}</option>
-  </select>
+<div class="container">
+  <h2 class="section-title"><mat-icon>money_off</mat-icon> Gastos</h2>
+
+  <mat-card class="form-card">
+    <input type="hidden" [(ngModel)]="id" />
+    <br>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput [(ngModel)]="descripcion" id="descripcion" rows="4"></textarea>
+    </mat-form-field>
+    
+    
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Valor</mat-label>
+      <input matInput [(ngModel)]="valor" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Fecha</mat-label>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="fecha" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Categoria</mat-label>
+      <mat-select [(ngModel)]="categoria">
+        <mat-option *ngFor="let categoria of categorias" [value]="categoria.id">{{categoria.nombre}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" (click)="agregarGasto()">{{textButton}}</button>
+  </mat-card>
+
+  <mat-divider class="my-divider"></mat-divider>
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="gastos" class="mat-elevation-z8 demo-table">
+      
+      <ng-container matColumnDef="fecha">
+        <th mat-header-cell *matHeaderCellDef> Fecha </th>
+        <td mat-cell *matCellDef="let cat"> {{ cat.fecha }} </td>
+      </ng-container>
+
+       <ng-container matColumnDef="descripcion">
+        <th mat-header-cell *matHeaderCellDef> Descripcion </th>
+        <td mat-cell *matCellDef="let cat"> {{ cat.descripcion }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="valor">
+        <th mat-header-cell *matHeaderCellDef> Valor </th>
+        <td mat-cell *matCellDef="let cat"> {{ cat.valor }} </td>
+      </ng-container>
+
+       <!-- Acciones -->
+       <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <td mat-cell *matCellDef="let cat">
+          <button mat-button color="accent" (click)="llenarFormulario(cat)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-button color="warn" (click)="eliminar(cat)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
   
-<button (click)="agregarGasto()">Añadir Gasto</button>
+      <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+    </table>
+  
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                   showFirstLastButtons
+                   aria-label="Select page of periodic elements">
+    </mat-paginator>
+  </div>
+  
+</div>
