@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { Categorias } from '../../../Models/categorias';
 import { CategoriasService } from '../../../Services/categorias.service';
 import { CommonModule } from '@angular/common';
@@ -10,8 +10,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { AlertasService } from '../../../Services/alertas.service';
+
 @Component({
   selector: 'app-categorias',
   imports: [
@@ -25,39 +28,70 @@ import { MatIconModule } from '@angular/material/icon';
     MatSelectModule,
     MatButtonModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
+    MatPaginatorModule
   ],
   templateUrl: './categorias.component.html',
   styleUrl: './categorias.component.css'
 })
-export class CategoriasComponent {
-  categorias: Categorias[];
+export class CategoriasComponent  implements AfterViewInit {
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngAfterViewInit() {
+    this.categorias.paginator = this.paginator;
+  }
+  
+
+  categorias = new MatTableDataSource<Categorias>();
+
   nombre = '';
   id=0;
   tipo = "ingreso";
   columnas: string[] = ['nombre', 'tipo', 'acciones'];
+  textButton = "Añadir Categoría";
 
-  constructor(private categoriasService: CategoriasService) {
-    this.categorias = this.categoriasService.obtenerCategorias();
+  constructor(private categoriasService: CategoriasService,
+    private alertasServices: AlertasService
+  ) {}
+  
+  ngOnInit(): void {
+    this.cargarCategorias();
   }
 
-  eliminar(categoria: Categorias){
-    this.categorias = this.categoriasService.eliminarCategorias(categoria);
+  cargarCategorias(): void {
+    this.categorias.data = this.categoriasService.obtenerCategorias();
+  }
+
+  async eliminar(categoria: Categorias) {
+    const confirmado = await this.alertasServices.mostrarConfirmacion();
+    if (confirmado) {
+      this.categorias.data = this.categoriasService.eliminarCategorias(categoria);
+      this.alertasServices.generarAlerta("Categoria Eliminada",'ok');
+
+    } else {
+      console.log("Cancelado por el usuario");
+    }
   }
 
   llenarFormulario(categoria: Categorias){
     this.nombre = categoria.nombre;
     this.tipo = categoria.tipo
     this.id = categoria.id
+    this.textButton = "Editar Categoría";
+    document.getElementById('nombreCategoria')?.focus()
   }
 
   agregarCategoria() {
     if (this.id==0) {
       const nuevaCategoria: Categorias = { id: Date.now(), nombre: this.nombre, tipo: this.tipo=='ingreso'?'ingreso':'gasto' };
-      this.categorias = this.categoriasService.agregarCategoria(nuevaCategoria);
+      this.categorias.data = this.categoriasService.agregarCategoria(nuevaCategoria);
+      this.alertasServices.generarAlerta("Categoria Creada",'ok');
     }else{
       const categoriaEditada: Categorias = { id: this.id, nombre: this.nombre, tipo: this.tipo=='ingreso'?'ingreso':'gasto' };
-      this.categorias = this.categoriasService.actualizarCategoria(categoriaEditada);
+      this.categorias.data = this.categoriasService.actualizarCategoria(categoriaEditada);
+      this.alertasServices.generarAlerta("Categoria Actualizada",'ok');
+
     }
     this.limpiar();
   }
@@ -66,5 +100,6 @@ export class CategoriasComponent {
     this.nombre = '';
     this.tipo = 'ingreso'
     this.id = 0
+    this.textButton = "Añadir Categoría";
   }
 }

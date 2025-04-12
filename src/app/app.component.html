@@ -2,19 +2,19 @@
   <span class="logo">⚡ Mi App</span>
   <span class="spacer"></span>
 
-  <mat-button-toggle-group name="fontStyle" aria-label="Font Style"  [value]="'Inicio'">
+  <mat-button-toggle-group name="fontStyle" aria-label="Font Style" [value]="seccionActual">
     <mat-button-toggle value="Inicio" [routerLink]="'/admin/inicio'">Inicio</mat-button-toggle>
-    <mat-button-toggle value="Categorias" [routerLink]="'/admin/categorias'">Categorias</mat-button-toggle>
+    <mat-button-toggle value="Categorias" [routerLink]="'/admin/categorias'">Categorías</mat-button-toggle>
     <mat-button-toggle value="Ingresos" [routerLink]="'/admin/ingresos'">Ingresos</mat-button-toggle>
     <mat-button-toggle value="Gastos" [routerLink]="'/admin/gastos'">Gastos</mat-button-toggle>
   </mat-button-toggle-group>
+
 </mat-toolbar>
 
 
-  
+
 <router-outlet />
 
 <mat-toolbar color="accent" class="footer-toolbar" role="contentinfo">
-    <span>© 2025 Mi App — Todos los derechos reservados.</span>
+  <span>© 2025 Mi App — Todos los derechos reservados.</span>
 </mat-toolbar>
-  

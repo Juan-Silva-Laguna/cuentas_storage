@@ -5,6 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { RouterModule } from '@angular/router'; // Necesario para routerLink
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -13,5 +14,17 @@ import { RouterModule } from '@angular/router'; // Necesario para routerLink
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'cuentas_personales';
+  title = 'Cuentas Personales';
+  constructor(private router: Router) {}
+
+  get seccionActual(): string {
+    const url = this.router.url;
+    if (url.includes('categorias')) return 'Categorias';
+    if (url.includes('ingresos')) return 'Ingresos';
+    if (url.includes('gastos')) return 'Gastos';
+    return 'Inicio';
+  }
+
+  
+  
 }
